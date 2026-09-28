@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: manufacturing-postgres
+    environment:
+      POSTGRES_DB: manufacturing
+      POSTGRES_USER: data_engineer
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
