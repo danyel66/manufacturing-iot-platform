@@ -98,6 +98,24 @@ clean_df = df[~invalid_record].copy()
 
 quarantine_df = df[invalid_record].copy()
 
+quarantine_df["quarantine_reason"] = ""
+quarantine_df.loc[
+    missing_measurements[quarantine_df.index],
+    "quarantine_reason"
+] += "missing_measurement;"
+quarantine_df.loc[
+    invalid_measurements[quarantine_df.index],
+    "quarantine_reason"
+] += "invalid_measurement;"
+quarantine_df.loc[
+    duplicate_record[quarantine_df.index],
+    "quarantine_reason"
+] += "duplicate_sensor_timestamp;"
+
+quarantine_df["quarantine_reason"] = (
+    quarantine_df["quarantine_reason"].str.rstrip(";")
+)
+
 clean_df.to_csv(CLEAN_FILE, index=False)
 
 quarantine_df.to_csv(QUARANTINE_FILE, index=False)
